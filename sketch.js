@@ -13,7 +13,12 @@ let pacmanY= 25;
 let pacmanSpeed = 2;
 let moveDirection= null;
 
-
+let ghosts = [
+  { x:288, y:435, color: color(255, 0, 0), eaten: false},
+  { x:223, y:360, color: color(255, 100, 0), eaten: false},
+  { x:108, y:635, color: color(0, 200, 0), eaten: false},
+  { x:95, y:405, color: color(90, 90, 255), eaten: false},
+]
 let layer; 
 
 function preload() {
