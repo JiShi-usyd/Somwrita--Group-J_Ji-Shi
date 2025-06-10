@@ -8,6 +8,11 @@ let colors = ['red', 'blue', 'yellow', 'white'];
 let rectWidths = [40, 50, 60, 70, 80, 90];
 let rectHeights = [30, 40, 50];
 let paths = [];
+let pacmanX= 185;
+let pacmanY= 25;
+let pacmanSpeed = 2;
+let moveDirection= null;
+
 
 let layer; 
 
