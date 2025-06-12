@@ -1,2 +1,3 @@
 # Interaction Instructions
-My method of interaction is to use the keyboard for control: use the W, A, S, and D keys to move Pac-Man up, left, down, and right. After pressing these keys, Pac-Man will automatically walk along the maze path and then "eat" all four ghosts. When all ghosts are eaten, a message "Mission Successful!" will pop up.
+My interaction method is to use the keyboard to interact: use the W, A, S, and D keys to control Pac-Man to move up, down, left, and right. And make Pac-Man walk along the maze path and then "eat" all four ghosts. When all ghosts are eaten, a message "Mission Success!" will pop up.
+# Details
