@@ -10,15 +10,15 @@ let rectHeights = [30, 40, 50];
 let paths = [];
 let pacmanX= 185;
 let pacmanY= 25;
-let pacmanSpeed = 2;
+let pacmanSpeed = 5;
 let moveDirection= null;
 
-let ghosts = [
-  { x:288, y:435, color: color(255, 0, 0), eaten: false},
-  { x:223, y:360, color: color(255, 100, 0), eaten: false},
-  { x:108, y:635, color: color(0, 200, 0), eaten: false},
-  { x:95, y:405, color: color(90, 90, 255), eaten: false},
-]
+let pixelghosts = [
+  { x: 288, y: 435, color: [255, 0, 0], eaten: false },
+  { x: 223, y: 360, color: [255, 100, 0], eaten: false },
+  { x: 108, y: 635, color: [0, 200, 0], eaten: false },
+  { x: 95, y: 405, color: [90, 90, 255], eaten: false }
+];
 let layer; 
 
 function preload() {
@@ -101,11 +101,36 @@ function draw() {
   drawPath();
   drawDots();
 
-  drawPixelPacman(138, 486, color(255, 255, 0)); // pacman
-  drawPixelGhost(288, 435, color(255, 0, 0)); // red
-  drawPixelGhost(223, 360, color(255, 100, 0)); //orange
-  drawPixelGhost(108, 635, color(0, 200, 0)); //green
-  drawPixelGhost(95, 405, color(90, 90, 255)); //purple
+  // 移动吃豆人
+// 控制吃豆人持续朝当前方向移动
+let dx = 0;
+let dy = 0;
+if (moveDirection === 'left') dx = -pacmanSpeed;
+else if (moveDirection === 'right') dx = pacmanSpeed;
+else if (moveDirection === 'up') dy = -pacmanSpeed;
+else if (moveDirection === 'down') dy = pacmanSpeed;
+
+let nextX = pacmanX + dx;
+let nextY = pacmanY + dy;
+
+// 判断是否在路径上继续移动
+if (isOnPath(nextX, nextY)) {
+  pacmanX = nextX;
+  pacmanY = nextY;
+}
+
+// 绘制吃豆人（图像内相对位置）
+drawPixelPacman(pacmanX - 32, pacmanY + 270, color(255, 255, 0));
+
+// 幽灵绘制 + 碰撞检测
+for (let g of pixelghosts) {
+  if (!g.eaten) {
+    drawPixelGhost(g.x, g.y, color(...g.color));
+    if (dist(pacmanX, pacmanY, g.x, g.y) < 20) {
+      g.eaten = true;
+    }
+  }
+}
 
   pop();
 
@@ -463,4 +488,19 @@ function drawNeonText(points, brightness, offsetX = 0, offsetY = 0) {
     drawingContext.shadowColor = color(0, 0, 0, 0);
     noFill();
   }
+}
+function isOnPath(x, y) {
+  for (let p of paths) {
+    let d1 = dist(x, y, p.x1, p.y1);
+    let d2 = dist(x, y, p.x2, p.y2);
+    let len = dist(p.x1, p.y1, p.x2, p.y2);
+    if (abs(d1 + d2 - len) < 5) return true;
+  }
+  return false;
+}
+function keyPressed() {
+  if (key === 'W' || keyCode === UP_ARROW) moveDirection = 'up';
+  else if (key === 'S' || keyCode === DOWN_ARROW) moveDirection = 'down';
+  else if (key === 'A' || keyCode === LEFT_ARROW) moveDirection = 'left';
+  else if (key === 'D' || keyCode === RIGHT_ARROW) moveDirection = 'right';
 }
